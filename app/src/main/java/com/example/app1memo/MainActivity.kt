@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val helper = DBHelper(this)
+        helper.writableDatabase.close()
+
     }
 
 }

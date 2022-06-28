@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import com.example.app1memo.databinding.ActivityMemoReadBinding
 
 class MemoReadActivity : AppCompatActivity() {
@@ -90,7 +91,36 @@ class MemoReadActivity : AppCompatActivity() {
 
             // 메뉴 삭제
             R.id.read_delete -> {
+                var builder = AlertDialog.Builder(this)
 
+                builder.setTitle("메모 삭제")
+                builder.setMessage("메모를 삭제하겠습니까?")
+
+                builder.setPositiveButton("삭제"){dialogInterface, i ->
+                    // 데이터 베이스 오픈
+                    val helper = DBHelper(this)
+                    // 쿼리문
+                    val sql = """
+                        delete from MemoTable
+                        where memo_idx=?
+                    """.trimIndent()
+
+                    // 글번호를 가져온다
+                    val memo_idx = intent.getIntExtra("memo_idx",0)
+
+                    // 쿼리문 실행
+                    val args = arrayOf(memo_idx.toString())
+
+                    helper.writableDatabase.execSQL(sql,args)
+                    helper.writableDatabase.close()
+
+                    finish()
+
+
+                }
+                builder.setNegativeButton("취소",null)
+
+                builder.show()
             }
         }
 

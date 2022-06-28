@@ -3,6 +3,7 @@ package com.example.app1memo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import com.example.app1memo.databinding.ActivityMemoReadBinding
 
@@ -64,11 +65,25 @@ class MemoReadActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.read_menu,menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
             android.R.id.home -> {
                 finish()
+            }
+            // 메모 수정
+            R.id.read_modify -> {
+
+            }
+
+            // 메뉴 삭제
+            R.id.read_delete -> {
+
             }
         }
 

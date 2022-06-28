@@ -1,5 +1,6 @@
 package com.example.app1memo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -78,7 +79,8 @@ class MemoReadActivity : AppCompatActivity() {
             }
             // 메모 수정
             R.id.read_modify -> {
-
+                var memoMofigyIntent = Intent(this,MemoModifyActivity::class.java)
+                startActivity(memoMofigyIntent)
             }
 
             // 메뉴 삭제

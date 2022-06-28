@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -109,6 +110,17 @@ class MainActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
             val mainRecyclerBinding = MainRecyclerRowBinding.inflate(layoutInflater)
             val holder = ViewHolderClass(mainRecyclerBinding)
+
+            // 생성되는 항목 View의 가로 세로 길이를 설정한다.
+            val layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+            mainRecyclerBinding.root.layoutParams = layoutParams
+
+            // 항목 View에 이벤트를 설정한다.
+            mainRecyclerBinding.root.setOnClickListener(holder)
+
             return holder
         }
 
@@ -122,10 +134,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         // HolderClass
-        inner class ViewHolderClass(mainRecyclerBinding: MainRecyclerRowBinding): RecyclerView.ViewHolder(mainRecyclerBinding.root){
+        // 요소 클릭 리스터 설정
+        inner class ViewHolderClass(mainRecyclerBinding: MainRecyclerRowBinding): RecyclerView.ViewHolder(mainRecyclerBinding.root), View.OnClickListener{
             // View의 주소값을 담는다
             val rowMemoSubject = mainRecyclerBinding.memoSubject
             val rowMemoDate = mainRecyclerBinding.memoDate
+
+            override fun onClick(v: View?) {
+//                Log.d("memo_app","항목 클릭 : $adapterPosition")
+                // 글 읽는 Activity를 실행한다.
+                val memoReadAdapter = Intent(baseContext,MemoReadActivity::class.java)
+                startActivity(memoReadAdapter)
+            }
         }
     }
 }

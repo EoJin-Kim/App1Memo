@@ -80,6 +80,11 @@ class MemoReadActivity : AppCompatActivity() {
             // 메모 수정
             R.id.read_modify -> {
                 var memoMofigyIntent = Intent(this,MemoModifyActivity::class.java)
+
+                // 글 번호를 담는다
+                val memo_idx = intent.getIntExtra("memo_idx",0)
+                memoMofigyIntent.putExtra("memo_idx",memo_idx)
+
                 startActivity(memoMofigyIntent)
             }
 

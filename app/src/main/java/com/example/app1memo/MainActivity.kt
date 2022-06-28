@@ -1,8 +1,11 @@
 package com.example.app1memo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.Menu
+import android.view.MenuItem
 import com.example.app1memo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,9 +24,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val helper = DBHelper(this)
-        helper.writableDatabase.close()
+        // Toolbar를 설정한다.
+        setSupportActionBar(binding.mainToolbar)
+        title = "메모앱"
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            // 추가 버튼
+            R.id.main_menu_add ->{
+                val memo_add_intent = Intent(this,MemoAddActivity::class.java)
+                startActivity(memo_add_intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

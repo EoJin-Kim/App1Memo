@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
     // 작성 날짜를 담을 리스트
     val date_list = ArrayList<String>()
 
+    // 메모의 번호를 담을 ArrayList
+    val idx_list = ArrayList<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,13 +56,14 @@ class MainActivity : AppCompatActivity() {
         // ArrayList를 비워준다.
         subject_list.clear()
         date_list.clear()
+        idx_list.clear()
 
         // 데이터 베이스 오픈
         val helper = DBHelper(this)
 
         // 쿼리문
         val sql = """
-            select memo_subject,memo_date
+            select memo_subject,memo_date,memo_idx
             from MemoTable
             order by memo_idx desc
         """.trimIndent()
@@ -70,11 +74,12 @@ class MainActivity : AppCompatActivity() {
             // 칼럼 idx를 가져온다.
             val idx1 = c1.getColumnIndex("memo_subject")
             val idx2 = c1.getColumnIndex("memo_date")
+            val idx3 = c1.getColumnIndex("memo_idx")
 
             // 데이터를 가져온다
             val memo_subject = c1.getString(idx1)
             val memo_date = c1.getString(idx2)
-
+            val memo_idx = c1.getInt(idx3)
 //            Log.d("memo_app",memo_subject)
 //            Log.d("memo_app",memo_date)
 //            Log.d("memo_app","------------------")
@@ -82,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             // 데이터를 담는다
             subject_list.add(memo_subject)
             date_list.add(memo_date)
+            idx_list.add(memo_idx)
 
             // RecyclerView에게 갱신하라고 명령한다.
             binding.mainRecycler.adapter?.notifyDataSetChanged()
@@ -142,8 +148,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun onClick(v: View?) {
 //                Log.d("memo_app","항목 클릭 : $adapterPosition")
+
+                // 현재 항목 글의 index를 추출한다.
+                val memo_idx = idx_list[adapterPosition]
+//                Log.d("memo_app","memo_idx : $memo_idx")
+
                 // 글 읽는 Activity를 실행한다.
                 val memoReadAdapter = Intent(baseContext,MemoReadActivity::class.java)
+                memoReadAdapter.putExtra("memo_idx",memo_idx)
                 startActivity(memoReadAdapter)
             }
         }
